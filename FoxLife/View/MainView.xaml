@@ -1,0 +1,154 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FoxLife.View"
+        xmlns:viewModels="clr-namespace:FoxLife.ViewModels"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:htmlTextBlock="http://www.quickzip.org/UserControls"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
+
+        xmlns:uc="clr-namespace:FoxLife.View.UC"
+        x:Class="FoxLife.View.MainView"
+        mc:Ignorable="d"
+        Height="650" Width="1000"
+        MinWidth="900" MinHeight="600"
+        WindowStyle="None"
+        WindowState="{Binding WindowState}" Icon="/icons/fox.png"
+        >
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="0"/>
+    </WindowChrome.WindowChrome>
+
+
+    <Window.DataContext>
+        <viewModels:MainViewModel/>
+    </Window.DataContext>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="140" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <!--Upper left-->
+        <Grid Grid.Row="0" Grid.Column="0" Background="#303030" MouseDown="WindowMouseDown"/>
+        <!--Upper right-->
+        <Grid Grid.Row="0" Grid.Column="1"  Background="#303030" MouseDown="WindowMouseDown">
+            <Grid VerticalAlignment="Center" HorizontalAlignment="Right">
+                <StackPanel Orientation="Horizontal">
+                    <Button BorderThickness="0" Background="Transparent" Width="17" Height="17" Margin="0,0,0,0"
+                            Style="{StaticResource SimpleButton}" Command="{Binding MinimizeWindow}">
+                        <Path Fill="White" Data="M21,3.59L21,5M3,21V19H21V21H3Z" Height="12" Stretch="Fill" Width="12"/>
+                    </Button>
+                    <Button BorderThickness="0" Background="Transparent" Width="17" Height="17" Margin="0,0,0,0"
+                            Style="{StaticResource SimpleButton}" Command="{Binding CloseWindow}" Visibility="Collapsed">
+                        <Path Fill="White" Data="M18,18H6V6H18M18,4H6A2,2 0 0,0 4,6V18A2,2 0 0,0 6,20H18A2,2 0 0,0 20,18V6C20,4.89 19.1,4 18,4Z" Height="12" Stretch="Fill" Width="12"/>
+                    </Button>
+                    <Button BorderThickness="0" Background="Transparent" Width="17" Height="17" Margin="0,0,0,0"
+                            Style="{StaticResource CloseButton}" Command="{Binding CloseWindow}">
+                        <Path Fill="White" Data="M13.41 12l4.3-4.29a1 1 0 1 0-1.42-1.42L12 10.59l-4.29-4.3a1 1 0 0 0-1.42 1.42l4.3 4.29-4.3 4.29a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l4.29-4.3 4.29 4.3a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.42z" Height="12" Stretch="Fill" Width="12"/>
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </Grid>
+        <!--Right side-->
+        <Grid Grid.Column="1" Background="#212121" Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="60" />
+            </Grid.RowDefinitions>
+                <StackPanel Grid.Row="0">
+                <!--Sign buttons-->
+                <Border Height="20" VerticalAlignment="Top" Margin ="0,10,0,0" Visibility="{Binding SignVisibility}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Button Command ="{Binding LoginMenu}"  Height="20" Width="55" Grid.Column="0" Background="#303030" Style="{StaticResource SimpleButton}" Content="{DynamicResource LoginText}" 
+                                Padding="5,3,5,3"
+                                Margin="0,0,5,0"
+                                HorizontalAlignment="Right"/>
+                        <Button Command ="{Binding RegisterMenu}" Height="20" Width="55" Grid.Column="1"  Background="#303030" Style="{StaticResource SimpleButton}"  
+                                Padding="5,3,5,3"
+                                HorizontalAlignment="Left"
+                                Margin="5,0,0,0">
+                            <Viewbox Stretch="Uniform" MaxHeight="18">
+                                <TextBlock Text="{DynamicResource RegisterText}"/>
+                            </Viewbox>
+                        </Button>
+                    </Grid>
+                </Border>
+                <!-- User Info -->
+                <Border HorizontalAlignment="Center" VerticalAlignment="Top" Visibility="{Binding UserVisibility}" Margin="0,30,0,0">
+                    <StackPanel>
+                        <Image Source="{Binding UserImage}" Width="100" Height="100"/>
+                        <Viewbox Stretch="Uniform" Margin="0,3,0,5" VerticalAlignment="Center" HorizontalAlignment="Center" MaxHeight="20">
+                        <TextBlock Text="{Binding UserName}" 
+                                   VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="16"/>
+                        </Viewbox>
+                        <Button Content="{DynamicResource ProfileText}" Command="{Binding Profile}" Style="{StaticResource SimpleButton}" MaxWidth="100" Padding="0,2"  Margin="0,3"/>
+                        <Button Content="{DynamicResource LogOutText}" Command="{Binding SignOut}" Style="{StaticResource SimpleButton}" MaxWidth="100" Padding="0,2" Margin="0,3"/>
+                        <Button Content="{DynamicResource MyTopicsText}" Command="{Binding OpenOwnTopics}" Style="{StaticResource SimpleButton}" MaxWidth="100" Padding="0,2" Margin="0,3"/>
+                        <Button 
+                                Command ="{Binding AdminMenu}"
+                                Grid.Column="1"  Background="#303030" 
+                                Style="{StaticResource SimpleButton}"  
+                                Padding="5,3"
+                                Margin="0,3"
+                                MaxWidth="100"
+                                Visibility="{Binding AdminMenuVisibility}"
+                        >
+                            <Viewbox Stretch="Uniform" MaxHeight="14">
+                                <TextBlock Text="{DynamicResource AdminMenuText}"  />
+                            </Viewbox>
+                        </Button>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+            <!--Change language-->
+                <ComboBox Grid.Row="1"
+                      Style="{StaticResource Languages}"
+                ItemsSource="{Binding Languages}"
+                SelectedItem="{Binding Language, UpdateSourceTrigger=PropertyChanged}"
+                      Height="Auto"
+                      VerticalAlignment="Bottom"
+                      HorizontalAlignment="Stretch"
+                      IsSynchronizedWithCurrentItem="True"
+            >
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Name}" Style="{StaticResource ComboSelect}" FontSize="12" Height="Auto" Width="Auto" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+
+        </Grid>
+
+        <!--Frame Side(left down)-->
+        <Frame Grid.Column="0" Grid.Row="1"
+               x:Name="Frame"
+               Background="#212121" Navigated="DeleteLastFrame" 
+               Content="{Binding CurrentPage}" NavigationUIVisibility="Hidden"
+               Focusable="False"
+               BorderThickness="0"
+               />
+
+        
+
+        <ItemsControl Grid.Row="1" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="10,0,0,10" ItemsSource="{Binding MessageList}">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+
+                    <uc:Message x:Name="MessageElement"/> 
+
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+    </Grid>
+</Window>

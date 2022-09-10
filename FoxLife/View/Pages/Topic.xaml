@@ -1,0 +1,259 @@
+﻿<Page x:Class="FoxLife.View.Pages.Topic"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:FoxLife.View.Pages"
+      xmlns:topicPage="clr-namespace:FoxLife.ViewModels.TopicPage"
+      xmlns:behavior="clr-namespace:FoxLife.View.Behavior"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      xmlns:htmlTextBlock="http://www.quickzip.org/UserControls"
+      xmlns:attached="clr-namespace:FoxLife.View.AttachedProperty"
+      xmlns:classes="clr-namespace:FoxLife.View.Classes"
+      mc:Ignorable="d" 
+      Title="Forum">
+
+    <Page.DataContext>
+        <topicPage:PostListViewModel/>
+    </Page.DataContext>
+
+    <ScrollViewer  attached:ScrollHelper.AutoScroll="{Binding ScrollToDown}" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" materialDesign:ScrollBarAssist.ButtonsVisibility="Hidden" materialDesign:ScrollBarAssist.ThumbCornerRadius="5" Focusable="False" BorderThickness="0">
+        <StackPanel Margin="20,0">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,5">
+                <Button Content="{DynamicResource BackText}" Command="{Binding Back}" HorizontalAlignment="Right" VerticalAlignment="Top" Width="50" Margin="5,5,0,0" Padding="5,3,5,3" Style="{StaticResource SimpleButton}"/>
+                <Button Content="{DynamicResource MainText}" Command="{Binding BackToMain}" HorizontalAlignment="Right" VerticalAlignment="Top" Width="Auto" Margin="5,5,0,0" Padding="5,3,5,3" Style="{StaticResource SimpleButton}"/>
+            </StackPanel>
+            <!--Start name and message-->
+            <Grid>
+                <StackPanel Orientation="Vertical"  Margin="3,0,0,10">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left">
+                        <Button Width="Auto" Height="Auto" VerticalAlignment="Center" VerticalContentAlignment="Center" Margin="0,0,5,0"
+                                Style="{StaticResource SimpleButton}" Command="{Binding ChangeCloseState}" Visibility="{Binding LockVisibility}">
+                            <materialDesign:PackIcon Kind="{Binding LockKind}" Foreground="{Binding LockForeground}" Width="20" Height="20" VerticalAlignment="Top"/>
+                        </Button>
+                        <Button Width="Auto" Height="Auto" VerticalAlignment="Center" VerticalContentAlignment="Center" Margin="0,0,5,0"
+                                Style="{StaticResource SimpleButton}" Command="{Binding ChangePinState}" Visibility="{Binding PinVisibility}">
+                            <materialDesign:PackIcon Kind="{Binding PinKind}" Foreground="{Binding PinForeground}" Width="20" Height="20" VerticalAlignment="Top"/>
+                        </Button>
+                    </StackPanel>
+                    
+                    <TextBlock Text="{Binding TopicName}" TextWrapping="Wrap" FontSize="24"/>
+               
+                    </StackPanel>
+            </Grid>
+
+            <Border Background="#424242" Margin="0" BorderThickness="0,0,0,5" BorderBrush="White">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="25"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="125" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <!--left part -->
+                    <Viewbox Stretch="Uniform" Grid.Column="0" Grid.Row="0" Margin="5,0,5,0" MaxHeight="20">
+                        <TextBlock  Text="{Binding AuthorName}" FontSize="15" VerticalAlignment="Center" HorizontalAlignment="Center" Style="{StaticResource Link}">
+                            <TextBlock.InputBindings>
+                                <MouseBinding MouseAction="LeftClick" Command="{Binding OpenAuthorProfile}"/>
+                            </TextBlock.InputBindings>
+                        </TextBlock>
+                    </Viewbox>
+                    <StackPanel Grid.Row="1" Grid.Column="0">
+                        <Image  Source="{Binding startPostImg}" Width="80" Height="80" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,10,0,5"/>
+                        <TextBlock Text="{Binding AuthorRoleName}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                    </StackPanel>
+                    <!--right part-->
+                    <Grid Grid.Row="0" Grid.Column="1" >
+                        <TextBlock Text="{Binding StartMsgTime}" FontSize="12" Margin="5,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                        <Button  VerticalAlignment="Center" HorizontalAlignment="Right" x:Name="Dots" Background="Transparent" BorderThickness="0" Style="{StaticResource PostDots}" Width="35" Height="15" Margin="0,0,10,0"
+                                Command="{Binding OpenAdditionally}"
+                                >
+                            <materialDesign:PackIcon Kind="DotsHorizontal"  Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center" Height="40" Width="40"/>
+                        </Button>
+                        <materialDesign:PopupEx Style="{x:Null}" AllowsTransparency="true" Placement="Top"  PlacementTarget="{Binding ElementName=Dots}" StaysOpen="False" IsOpen="{Binding AdditionallyPopUpState}">
+                            <Border CornerRadius="5" Background="#424242" BorderThickness="1" BorderBrush="White">
+                                <StackPanel>
+                                    <Button Content="{DynamicResource EditText}" Style="{StaticResource AdditionalMenuButton}" Padding="5,3,5,3" FontSize="16" Margin="3" Background="Transparent"
+                                            Visibility="{Binding EditVisibility}"
+                                            Command="{Binding StartEditCommand}"
+                                        />
+                                    <Button Content="{DynamicResource AnswerText}" Style="{StaticResource AdditionalMenuButton}" Padding="5,3,5,3" FontSize="16" Margin="3" Background="Transparent"
+                                            Visibility="{Binding AnswerVisibility}"
+                                            Command="{Binding AnswerCommand}"
+                                            CommandParameter="{Binding AuthorName}"
+                                            attached:EventFocusAttachment.ElementToFocus="{Binding ElementName=MessageBox}"
+                                            Click="MoveCarriageToEnd"
+                                            />
+                                </StackPanel>
+                            </Border>
+                        </materialDesign:PopupEx>
+                    </Grid>
+                    <htmlTextBlock:HtmlTextBlock Background="Transparent" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top"
+                                Html="{Binding UpdateSourceTrigger=PropertyChanged, Path=StartPostMsg}"/>
+                </Grid>
+            </Border>
+            <!--Changing Page-->
+            <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                <Button Visibility="{Binding FirstLastVisibility}" Command="{Binding FirstPage}" Style="{StaticResource SimpleButton}" 
+                        Width="Auto" Height="Auto" MaxHeight="25" Padding="5,3,5,3"
+                        >
+                    <materialDesign:PackIcon Kind="PageFirst" Width="18" Height="18" />
+                </Button>
+                <ItemsControl ItemsSource="{Binding Pages}" >
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Horizontal" IsItemsHost="True"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Button Style="{StaticResource SimpleButton}" Padding="7,5" Margin="3" Content="{Binding PageNumb}" Background="{Binding Background}"
+                                Command="{Binding RelativeSource={RelativeSource AncestorType=ScrollViewer},Path=DataContext.ChangePage}"
+                                CommandParameter="{Binding PageNumb}"
+                        />
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+                <Button Visibility="{Binding FirstLastVisibility}" Command="{Binding LastPage}" Style="{StaticResource SimpleButton}"
+                        Width="Auto" Height="Auto" MaxHeight="25" Padding="5,3,5,3"
+                        >
+                    <materialDesign:PackIcon Kind="PageLast" Width="18" Height="18" />
+                </Button>
+            </StackPanel>
+            <!--Posts-->
+            
+                <TreeView  ItemsSource="{Binding Posts}" Background="Transparent" BorderThickness="0" HorizontalAlignment="Stretch"  HorizontalContentAlignment="Stretch"
+                                         Style="{StaticResource PostTreeView}" Margin="-20,0,0,0"
+                                         TreeViewItem.PreviewMouseDoubleClick="PreventMouseDoubleClick"
+                                         TreeViewItem.MouseDoubleClick="PreventMouseDoubleClick"
+                    >
+
+                <TreeView.ItemTemplate>
+                    <HierarchicalDataTemplate ItemsSource="{Binding SubPosts}">
+                        <Border Background="#424242" Margin="0" BorderThickness="0,0,0,5" BorderBrush="White">
+                            <Grid >
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="25"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="125" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <!--left part -->
+                                <Viewbox Stretch="Uniform" Grid.Column="0" Grid.Row="0" Margin="5,0,5,0" MaxHeight="20">
+                                    <TextBlock  Text="{Binding UserName}" Style="{StaticResource Link}" FontSize="18" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                        <TextBlock.InputBindings>
+                                            <MouseBinding MouseAction="LeftClick" Command="{Binding OpenProfile}"/>
+                                        </TextBlock.InputBindings>
+                                    </TextBlock>
+                                </Viewbox>
+
+                                <StackPanel Grid.Row="1" Grid.Column="0">
+                                    <Image  Source="{Binding Img}" Width="80" Height="80" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,10,0,5"/>
+                                    <TextBlock Text="{Binding RoleName}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                                </StackPanel>
+                                <!--right part-->
+                                <Grid Grid.Row="0" Grid.Column="1" >
+                                    <TextBlock Text="{Binding MsgTime}" FontSize="12" Margin="5,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                                    <Button  VerticalAlignment="Center" HorizontalAlignment="Right" x:Name="Dots" Background="Transparent" BorderThickness="0" Style="{StaticResource PostDots}" Width="35" Height="15" Margin="0,0,10,0"
+                                             Command="{Binding OpenAdditionally}">
+                                        <materialDesign:PackIcon Kind="DotsHorizontal"  Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center" Height="40" Width="40"/>
+                                    </Button>
+                                    <!--Pop Up-->
+                                    <Popup Style="{x:Null}" AllowsTransparency="true" Placement="Top" PlacementTarget="{Binding ElementName=Dots}" StaysOpen="False" IsOpen="{Binding AdditionallyPopUpState}">
+                                        <Border CornerRadius="5" Background="#424242" BorderThickness="1" BorderBrush="White">
+                                            <StackPanel>
+                                                <Button Content="{DynamicResource DeleteText}" Style="{StaticResource AdditionalMenuButton}" Padding="5,3,5,3" FontSize="16" Margin="3" Background="Transparent"
+                                                        Visibility="{Binding ButtonDelete}"
+                                                        Command="{Binding DeletePost}"/>
+                                                <Button Content="{DynamicResource EditText}" Style="{StaticResource AdditionalMenuButton}" Padding="5,3,5,3" FontSize="16" Margin="3" Background="Transparent"
+                                                        Visibility="{Binding ButtonEdit}"
+                                                        Command="{Binding StartEdit}"/>
+                                                <Button Content="{DynamicResource AnswerText}" Style="{StaticResource AdditionalMenuButton}" Padding="5,3,5,3" FontSize="16" Margin="3" Background="Transparent"
+                                                        Visibility="{Binding ButtonAnswer}"
+                                                        Command="{Binding Answer}"
+                                                        CommandParameter="{Binding Post}"
+                                                        attached:EventFocusAttachment.ElementToFocus="{Binding ElementName=MessageBox}"
+                                                        Click="MoveCarriageToEnd"
+                                                        />
+                                            </StackPanel>
+                                        </Border>
+                                    </Popup>
+                                </Grid>
+                                <htmlTextBlock:HtmlTextBlock Background="Transparent" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top"
+                                             Html="{Binding UpdateSourceTrigger=PropertyChanged, Path=Message}"/>
+                            </Grid>
+                        </Border>
+                    </HierarchicalDataTemplate>
+                </TreeView.ItemTemplate>
+            </TreeView>
+            <!--Creating post-->
+            <!--hint to answer-->
+            <Border CornerRadius="5" Background="#424242" 
+                    Visibility="{Binding AnswerHintVisibility}"
+                    Width="Auto"
+                    Height="25"
+                    Margin="0,5" HorizontalAlignment="Left"
+            >
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock 
+                        Text="{Binding AnswerHintMessage}" 
+                        VerticalAlignment="Center"
+                        Margin="5,0"
+                               />
+                    <Button 
+                        Style="{StaticResource SimpleButton}"
+                        Command="{Binding CloseAnswerHint}"
+                        Background="#212121"
+                        Margin="5,0"
+                        VerticalAlignment="Center"
+                            >
+                        <materialDesign:PackIcon Kind="Close"  Width="15" Height="15" Foreground="IndianRed"/>
+                    </Button>
+
+                </StackPanel>
+            </Border>
+            <!--Block with text-->
+            <StackPanel Visibility="{Binding SendPostVisibility}" Margin="0,0,0,20">
+                <Border Background="#424242" Margin="0,5,0,5" BorderThickness="0,0,0,5" BorderBrush="White">
+                    <Border Margin="5" Background="#323232" MinHeight="70" CornerRadius="3">
+                        <Grid Background="Transparent" Margin="5">
+                            <TextBlock Text="{DynamicResource TypeMessage}" Foreground="Gray"
+                                   Visibility="{Binding MessagePlaceholder}"
+                                   FontSize="16"
+                                   />
+                            <TextBox x:Name="MessageBox"
+                                 Background="Transparent" 
+                                 BorderThickness="0" 
+                                 Text="{Binding Message, UpdateSourceTrigger=PropertyChanged}"
+                                 TextWrapping="Wrap"
+                                 AcceptsTab="True" 
+                                 AcceptsReturn="True"
+                                 FontSize="16"
+                                 
+                                 />
+                        </Grid>
+                    </Border>
+                </Border>
+                <!--Buttons after send-->
+                    <Grid HorizontalAlignment="Right">
+                    <StackPanel Orientation="Horizontal"
+                                Visibility="{Binding EditMenuVisibility}"
+                                >
+                        <Button Content="{DynamicResource ConfirmText}" Style="{StaticResource SimpleButton}" Padding="5,3,5,3" Margin="0,0,10,0" HorizontalAlignment="Right"
+                                Command="{Binding ConfirmEdit}"/>
+                        <Button Content="{DynamicResource CancelText}" Style="{StaticResource SimpleButton}" Padding="5,3,5,3" Margin="0,0,10,0" HorizontalAlignment="Right"
+                                Command="{Binding CancelEdit}"/>
+                    </StackPanel>
+                            <Button Content="{DynamicResource SendText}" Style="{StaticResource SimpleButton}" Padding="5,3,5,3" Margin="0,0,10,0" HorizontalAlignment="Right"
+                            Command="{Binding SendMessage}"
+                            Visibility="{Binding SendButtonVisibility}"
+                            />
+                </Grid>
+            </StackPanel>
+        </StackPanel>
+    </ScrollViewer>
+</Page>

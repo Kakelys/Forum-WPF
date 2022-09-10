@@ -1,0 +1,109 @@
+﻿<Page x:Class="FoxLife.View.Pages.UserProfile"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:FoxLife.View.Pages"
+      xmlns:userPage="clr-namespace:FoxLife.ViewModels.UserPage"
+      xmlns:lcl="clr-namespace:FoxLife.View.Behavior"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="UserProfile">
+    <Page.DataContext>
+        <userPage:UserProfileViewModel/>
+    </Page.DataContext>
+    
+    <Border x:Name="Top" CornerRadius="15,15,0,0" BorderThickness="0,1,0,0" BorderBrush="#212112">
+        <Grid Background="Transparent">
+            <!--Options-->
+            <Popup Style="{x:Null}" AllowsTransparency="true" Placement="Top" PlacementTarget="{Binding ElementName=Options}" StaysOpen="False" IsOpen="{Binding AdditionallyPopUpState}">
+                <Border CornerRadius="5" Background="#424242" BorderThickness="1" BorderBrush="White">
+                    <StackPanel>
+                        <Button Content="{DynamicResource ChangeImageText}" Style="{StaticResource AdditionalMenuButton}" Padding="5,3,5,3" FontSize="16" Margin="3" Background="Transparent"
+                                Command="{Binding ChangeImage}"/>
+                        <Button Content="{DynamicResource ChangePasswordText}" Style="{StaticResource AdditionalMenuButton}" Padding="5,3,5,3" FontSize="16" Margin="3" Background="Transparent"
+                                Command="{Binding ChangePassword}"/>
+                    </StackPanel>
+                </Border>
+            </Popup>
+            <!--Change Password-->
+            <Popup Style="{x:Null}" AllowsTransparency="true" Placement="Center" PlacementTarget="{Binding ElementName=Top}" StaysOpen="False" IsOpen="{Binding PasswordPopUpState}">
+                <Border BorderThickness="1" BorderBrush="White" CornerRadius="5" Background="#212121" Width="Auto" MinWidth="300">
+                    <StackPanel>
+                        <Border HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,10,0,0" Background="Transparent" Height="44" Width="Auto" MinWidth="200"
+                            BorderThickness="0,0,0,3" BorderBrush="White">
+                        <Grid Cursor="Arrow">
+                            <TextBlock Text ="{DynamicResource TypeOldPasswordText}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16" Visibility="{Binding OldPasswordPlaceholder}" Foreground="Gray" FontFamily="Arial" />
+                            <PasswordBox Style="{x:Null}" BorderThickness="0" HorizontalAlignment="Stretch" PasswordChanged="OldPasswordOnChange" VerticalAlignment="Stretch"  Height="30" SelectionBrush="#FF394956" Foreground="White" FontFamily="Arial" FontSize="16" BorderBrush="{x:Null}" Background="{x:Null}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" CaretBrush="White"/>
+                        </Grid>
+                    </Border>
+                    <Border HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,10,0,0" Background="Transparent" Height="44"  Width="Auto" MinWidth="200"
+                            BorderThickness="0,0,0,3" BorderBrush="White">
+                        <Grid Cursor="Arrow">
+                            <TextBlock Text ="{DynamicResource TypeNewPasswordText}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16" Visibility="{Binding NewPasswordPlaceholder}" Foreground="Gray" FontFamily="Arial" />
+                            <PasswordBox Style="{x:Null}" BorderThickness="0" HorizontalAlignment="Stretch" PasswordChanged="NewPasswordOnChange" VerticalAlignment="Stretch" Height="30" SelectionBrush="#FF394956" Foreground="White" FontFamily="Arial" FontSize="16" BorderBrush="{x:Null}" Background="{x:Null}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" CaretBrush="White"/>
+                        </Grid>
+                    </Border>
+                        <Button VerticalAlignment="Center" HorizontalAlignment="Center" Content="{DynamicResource ConfirmText}" Padding="5,3,5,3" Margin="10"
+                                Style="{StaticResource SimpleButton}" Command="{Binding ConfirmChangePassword}"/>
+                </StackPanel>
+                    </Border>
+            </Popup>
+                <Grid Background="Transparent">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0" Background="#323232">
+                <TextBlock Text="{Binding Name}" FontSize="24" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            </Grid>
+            <Grid Grid.Row="1">
+                <Grid Margin="20">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="125"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="125"/>
+                    </Grid.ColumnDefinitions>
+                    <Image Grid.Column="0"
+                            Source="{Binding Img}"
+                               Width="125" Height="125" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+                    <Grid Grid.Column="1" Margin="20,10,0,0">
+                        <StackPanel>
+                        <TextBlock Margin="0,5" FontSize="18"
+                                   Text="{Binding GroupName}"/>
+                            <TextBlock Margin="0,5" FontSize="18"
+                                   Text="{Binding RegDate}"/>
+                            <TextBlock Margin="0,5" FontSize="18"
+                                   Text="{Binding CountOfPosts}"/>
+                        <TextBlock Margin="0,5" FontSize="18"
+                                   Text="{Binding CountOfTopics}" Style="{StaticResource Link}">
+                            <TextBlock.InputBindings>
+                                <MouseBinding Command="{Binding OpenUserTopics}" MouseAction="LeftClick" />
+                            </TextBlock.InputBindings>
+                        </TextBlock>
+                        </StackPanel>
+                    </Grid>
+                    <Grid Grid.Column="2" Background="Transparent">
+                        <StackPanel>
+                            <Button Margin="0,3" VerticalAlignment="Center" HorizontalAlignment="Right" Width="75" Padding="5,3,5,3"
+                                Content="{DynamicResource BackText}" Style="{StaticResource SimpleButton}"
+                                Command="{Binding Back}"
+                                />
+                            <Button Margin="0,3" VerticalAlignment="Center" HorizontalAlignment="Right" Width="75" Padding="5,3,5,3"
+                                    Content="{DynamicResource MainText}" Style="{StaticResource SimpleButton}"
+                                    Command="{Binding BackToMain}"
+                            />
+                            <Button x:Name="Options" Margin="0,3" VerticalAlignment="Center" HorizontalAlignment="Right" Width="75" Padding="5,3,5,3"
+                                    Content="{DynamicResource OptionsText}" Style="{StaticResource SimpleButton}"
+                                    Visibility="{Binding OptionsVisibility}"
+                                    Command ="{Binding Options}"
+                                    />
+                        </StackPanel>
+                    </Grid>
+                    
+                </Grid>
+            </Grid>
+        </Grid>
+            </Grid>
+    </Border>
+</Page>

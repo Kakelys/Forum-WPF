@@ -1,0 +1,40 @@
+﻿<Page x:Class="FoxLife.View.Pages.TopicListCreate"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FoxLife.View.Pages"
+        xmlns:forumPage="clr-namespace:FoxLife.ViewModels.ForumPage"
+        mc:Ignorable="d"
+
+        >
+    <Page.DataContext>
+        <forumPage:TopicCreateView/>
+    </Page.DataContext>
+
+    <ScrollViewer VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled" Background="Transparent" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10" Focusable="False" BorderThickness="0">
+        <StackPanel>
+            <!--Name-->
+            <Border CornerRadius="5" BorderThickness="1" Style="{x:Null}" BorderBrush="White"  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5"  Background="#FF303030" Height="44" >
+                <Grid Margin="15,0,5,0">
+                    <TextBlock Text="{DynamicResource TypeTopicNameText}" Foreground="Gray" VerticalAlignment="Center" HorizontalAlignment="Left" FontFamily="Arial" FontSize="16" Visibility="{Binding NamePlaceholder}"/>
+                    <TextBox BorderThickness="0" TextWrapping="NoWrap" Text="{Binding UpdateSourceTrigger=PropertyChanged,Path=Name}" VerticalAlignment="Center" HorizontalAlignment="Left" Width="332" Height="30" SelectionBrush="#FF394956" Foreground="White" FontFamily="Arial" FontSize="16" BorderBrush="{x:Null}" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" Background="{x:Null}" CaretBrush="White" />
+                </Grid>
+            </Border>
+            <!--Message-->
+            <Border Style="{x:Null}" CornerRadius="5" BorderThickness="1" BorderBrush="White"  HorizontalAlignment="Center" VerticalAlignment="Top" Margin="5" Background="#FF303030" Height="Auto" >
+                <Grid Width="Auto" Height="Auto" Margin="15,10,5,0">
+                    <TextBlock Text="{DynamicResource TypeMessage}" Foreground="Gray" VerticalAlignment="Top" HorizontalAlignment="Left" FontFamily="Arial" FontSize="16" Visibility="{Binding MessagePlaceholder}" Height="Auto" Width="Auto"/>
+                    <TextBox BorderThickness="0" Text="{Binding UpdateSourceTrigger=PropertyChanged,Path=Message}" HorizontalAlignment="Left"  VerticalAlignment="Top"  MinWidth="332" Width="Auto" MinHeight="200" Height="Auto" SelectionBrush="#FF394956" Foreground="White" FontFamily="Arial" FontSize="16" Background="Transparent" CaretBrush="White" AcceptsTab="True" AcceptsReturn="True" TextWrapping="Wrap"/>
+                </Grid>
+            </Border>
+
+            <StackPanel Orientation="Horizontal">
+                <Button Content="{DynamicResource ConfirmText}"  Command="{Binding Confirm}" Padding="5,3,5,3" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Left" Style="{StaticResource SimpleButton}"/>
+                <Button Content="{DynamicResource BackText}" Command="{Binding Back}" Padding="5,3,5,3" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Left" Style="{StaticResource SimpleButton}"/>
+            </StackPanel>
+        </StackPanel>
+
+
+    </ScrollViewer>
+</Page>

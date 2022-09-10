@@ -1,0 +1,251 @@
+﻿<Page x:Class="FoxLife.View.Pages.MainPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:FoxLife.View.Pages"
+      xmlns:viewModels="clr-namespace:FoxLife.ViewModels"
+      xmlns:mainPage="clr-namespace:FoxLife.ViewModels.MainPage"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="MainPage"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      xmlns:htmlTextBlock="http://www.quickzip.org/BaseControls">
+
+    <Page.DataContext>
+        <mainPage:MainPageView/>
+    </Page.DataContext>
+
+    <ScrollViewer x:Name="ScrollViewerTop" VerticalScrollBarVisibility="Auto" Focusable="False" BorderThickness="0">
+        <StackPanel>
+            <Button Content="{DynamicResource SectionCreateText}" Visibility="{Binding ButtonsVisibility}" Style="{StaticResource SimpleButton}" Background="#303030" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,5,0,0" Padding="5,3,5,3" Command="{Binding AddSection}"/>
+            <!--Popup for add section-->
+            <Popup Style="{x:Null}" AllowsTransparency="true" Placement="Center" PlacementTarget="{Binding ElementName=ScrollViewerTop}" StaysOpen="False" IsOpen="{Binding AddSectionPopUpState}">
+                <Border BorderThickness="1" BorderBrush="White" CornerRadius="2" Height="Auto" Width=" Auto">
+                <Grid Background="#212121">
+                    <StackPanel>
+                    <Border MinWidth="150" BorderBrush="White" BorderThickness="1" CornerRadius="5" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="10,10,10,0" Background="#FF303030" Height="44">
+                        <Grid>
+                            <TextBlock Text="{DynamicResource TypeSectionName}" Foreground="Gray" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Arial" FontSize="16" Visibility="{Binding SectionNameVisibility}"/>
+                            <TextBox BorderThickness="0" HorizontalAlignment="Center" TextWrapping="Wrap" Text="{Binding UpdateSourceTrigger=PropertyChanged,Path=SectionName}" VerticalAlignment="Center" Width="332" Height="30" SelectionBrush="#424242" Foreground="White" FontFamily="Arial" FontSize="16" BorderBrush="{x:Null}" Background="{x:Null}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" CaretBrush="White" />
+                        </Grid>
+                    </Border>
+                        <Button Content="{DynamicResource ConfirmText}" Style="{StaticResource SimpleButton}" Background="#303030" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,10,0,5" Padding="5,3" FontSize="18" Command="{Binding AddSectionConfirm}"/>
+                    </StackPanel>
+                    </Grid>
+                </Border>
+            </Popup>
+            <!--PopUp for confirming deleting forum-->
+            <Popup Style="{x:Null}" AllowsTransparency="true" Placement="Center" PlacementTarget="{Binding ElementName=ScrollViewerTop}" StaysOpen="False" IsOpen="{Binding ForumDeletePopUpState}">
+                <Border BorderThickness="1" BorderBrush="White" CornerRadius="2" Height="Auto" Width=" Auto">
+                    <Grid Background="#212121">
+                        <StackPanel>
+                            <TextBlock Text="{StaticResource ConfirmDeletingText}" Margin="5,5,5,0" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Arial" FontSize="16"/>
+                            <Button Content="Confirm" Style="{StaticResource SimpleButton}" Background="#303030" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,10,0,5" FontSize="18" 
+                                    Command="{Binding ConfirmForumDelete}"
+                                    Padding="7,3"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+            </Popup>
+            <!--PopUp for changing forum-->
+            <Popup Style="{x:Null}" AllowsTransparency="true" Placement="Center" PlacementTarget="{Binding ElementName=ScrollViewerTop}" StaysOpen="False" 
+                   IsOpen="{Binding ForumChangePopUpState}">
+                <Border BorderThickness="1" BorderBrush="White" CornerRadius="2" Height="Auto" Width="Auto" MinWidth="200">
+                    <Grid Background="#212121">
+                        <StackPanel>
+                            <TextBlock Text="{StaticResource TypeNewForumNameText}" Margin="5,5,5,0" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Arial" FontSize="13"/>
+                            <Border BorderThickness="0,0,0,2" BorderBrush="White"
+                                    Margin="5"
+                                    Width="Auto" MinWidth="150"
+                                    >
+                            <TextBox Text="{Binding NewForumName, UpdateSourceTrigger=PropertyChanged}" BorderThickness="0" 
+                                     HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
+                                     HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                                     Margin="5"
+                                     />
+                            </Border>
+                            <Grid>
+                                <Button Content="{DynamicResource ConfirmText}" Style="{StaticResource SimpleButton}" Background="#303030" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,10,0,5" FontSize="18" 
+                                    Command="{Binding ConfirmChangeForum}"
+                                    Padding="7,3"/>
+                                <Button Width="Auto" Height="Auto" VerticalAlignment="Bottom" HorizontalAlignment="Left" Background="Transparent" Margin="5" 
+                                        Style="{StaticResource SimpleButton}"
+                                        Command="{Binding ChoosePictureToChange}"
+                                        >
+                                    <materialDesign:PackIcon Kind="ImageEditOutline" Foreground="White" Width="25" Height="25"/>
+                                </Button>
+                            </Grid>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+            </Popup>
+            <!--PopUp for confirming deleting Section-->
+            <Popup Style="{x:Null}" AllowsTransparency="true" Placement="Center" PlacementTarget="{Binding ElementName=ScrollViewerTop}" StaysOpen="False" IsOpen="{Binding SectionDeletePopUpState}">
+                <Border BorderThickness="1" BorderBrush="White" CornerRadius="2" Height="Auto" Width=" Auto">
+                    <Grid Background="#212121">
+                        <StackPanel>
+                            <TextBlock Text="{DynamicResource ConfirmDeletingText}" Margin="5,5,5,0" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Arial" FontSize="16"/>
+                            <Button Content="{DynamicResource ConfirmText}" Style="{StaticResource SimpleButton}" Background="#303030" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,10,0,5" FontSize="18" 
+                                    Command="{Binding ConfirmSectionDelete}"
+                                    Padding="7,3"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+            </Popup>
+            <!--PopUp for changing Section-->
+            <Popup Style="{x:Null}" AllowsTransparency="true" Placement="Center" PlacementTarget="{Binding ElementName=ScrollViewerTop}" StaysOpen="False" 
+                   IsOpen="{Binding SectionChangePopUpState}">
+                <Border BorderThickness="1" BorderBrush="White" CornerRadius="2" Height="Auto" Width="Auto" MinWidth="200">
+                    <Grid Background="#212121">
+                        <StackPanel>
+                            <TextBlock Text="{DynamicResource TypeNewForumNameText}" Margin="5,5,5,0" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Arial" FontSize="13"/>
+                            <Border BorderThickness="0,0,0,2" BorderBrush="White"
+                                    Margin="5"
+                                    Width="Auto" MinWidth="150"
+                                    >
+                                <TextBox Text="{Binding NewSectionName, UpdateSourceTrigger=PropertyChanged}" BorderThickness="0" 
+                                     HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
+                                     HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                                     Margin="5"
+                                     />
+                            </Border>
+                            <Grid>
+                                <Button Content="{DynamicResource ConfirmText}" Style="{StaticResource SimpleButton}" Background="#303030" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,10,0,5" FontSize="18" 
+                                    Command="{Binding ConfirmChangeSection}"
+                                    Padding="7,3"/>
+                            </Grid>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+            </Popup>
+            <!--List of sections-->
+            <ItemsControl ItemsSource="{Binding Sections}" x:Name="SectList">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <materialDesign:Card Margin="20,10">
+                            <Expander
+                                    IsExpanded="True"
+                                    Background="#323232"
+                                    HorizontalAlignment="Stretch"
+                                    materialDesign:ExpanderAssist.HeaderFontSize="20"
+                                    materialDesign:ExpanderAssist.HeaderBackground="#424242"
+                                    Header="{Binding Name}">
+                                <StackPanel>
+                                    <!--Section Change/Delete-->
+                                        <Grid>
+                                        <StackPanel Orientation="Horizontal"  VerticalAlignment="Center" HorizontalAlignment="left" Margin="5,3"
+                                                                    Visibility="{Binding RelativeSource={RelativeSource AncestorType=ScrollViewer},Path=DataContext.ButtonsVisibility}"
+                                                                    >
+                                            <Button Margin="0,0,5,5" Width="Auto" Height="Auto" BorderThickness="0" Background="Transparent" Style="{StaticResource SimpleButton}"
+                                                                    Command="{Binding RelativeSource={RelativeSource AncestorType=ScrollViewer}, Path=DataContext.SetSectionToChange}"
+                                                                    CommandParameter="{Binding SectionDb}"
+                                                                    >
+                                                <materialDesign:PackIcon Kind="PencilOutline" Width="15"  Height="15" Background="Transparent" Foreground="White"/>
+                                            </Button>
+                                            <Button Margin="0,0,5,5" Width="Auto" Height="Auto" BorderThickness="0" Background="Transparent" Style="{StaticResource SimpleButton}"
+                                                                    Visibility="{Binding RelativeSource={RelativeSource AncestorType=ScrollViewer},Path=DataContext.DeleteVisibility}"
+                                                                    Command="{Binding RelativeSource={RelativeSource AncestorType=ScrollViewer}, Path=DataContext.SetSectionToDelete}"
+                                                                    CommandParameter="{Binding Id}"
+                                                            >
+                                                <materialDesign:PackIcon Kind="DeleteForeverOutline" Foreground="IndianRed" Background="Transparent" Width="15" Height="15"/>
+                                            </Button>
+                                        </StackPanel>
+                                        <!--Create Forum-->
+                                        <Button Content="{DynamicResource CreateForumText}" Visibility="{
+                                    Binding ElementName=SectList,
+                                    Path=DataContext.ButtonsVisibility}" 
+                                                Command="{Binding AddForum}"
+                                                Width="Auto" Padding="5,2,5,2" 
+                                                Style="{StaticResource SimpleButton}" VerticalAlignment="Top" FontSize="12" 
+                                                Background="#212121" HorizontalAlignment="Right" Margin="3,3,0,0"/>
+                                        </Grid>
+                                            <!--Forums list-->
+                                        <ItemsControl ItemsSource="{Binding Topics}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Border BorderThickness="0,0,0,1" BorderBrush="Gray" Margin="0,0,0,0" Height="75">
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="75"/>
+                                                            <ColumnDefinition Width="*"/>
+                                                            <ColumnDefinition Width="100"/>
+                                                            <ColumnDefinition Width="100"/>
+                                                            <ColumnDefinition Width="*"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <Image Source="{Binding Img}" 
+                                                               VerticalAlignment="Center" HorizontalAlignment="Center" 
+                                                               Width="50" Height="50"/>
+                                                            <Border Grid.Column="1">
+                                                            <TextBlock Text ="{Binding Name}" Style="{StaticResource Link}" 
+                                                                       FontFamily="Arial" Width="Auto" VerticalAlignment="Center" HorizontalAlignment="Left" FontSize="18">
+                                                                <TextBlock.InputBindings>
+                                                                    <MouseBinding Command="{Binding OpenTopic}" MouseAction="LeftClick" />
+                                                                </TextBlock.InputBindings>
+                                                            </TextBlock>
+                                                        </Border>
+                                                        <StackPanel Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                                            <TextBlock Text ="{Binding CountOfTopics}" 
+                                                                       HorizontalAlignment="Center"  VerticalAlignment="Center" FontSize="18"/>
+                                                            <TextBlock Text="{DynamicResource TopicsText}" Foreground="Gray" FontSize="10" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                                        </StackPanel>
+                                                        <StackPanel Grid.Column="3" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                                            <TextBlock Text ="{Binding CountOfMsg}" 
+                                                                       HorizontalAlignment="Center" FontFamily="Arial" VerticalAlignment="Center" FontSize="18" />
+                                                            <TextBlock Text="{DynamicResource MessagesText}" Foreground="Gray" FontSize="10" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                                        </StackPanel>
+
+                                                        <StackPanel Grid.Column="4" VerticalAlignment="Center" HorizontalAlignment="Left">
+                                                            <TextBlock>
+                                                                <TextBlock.Inlines>
+                                                                    <Run Text="{Binding TopicText}" Foreground="Gray"/>
+                                                                    <Run Text="{Binding LastName}" Style="{StaticResource LinkRun}" FontSize="16">
+                                                                        <Run.InputBindings>
+                                                                            <MouseBinding Command="{Binding OpenLastTopic}" MouseAction="LeftClick"/>
+                                                                        </Run.InputBindings>
+                                                                    </Run>
+                                                                </TextBlock.Inlines>
+                                                            </TextBlock>
+
+                                                            <TextBlock>
+                                                                <TextBlock.Inlines>
+                                                                    <Run Text="{Binding LastUserName}" FontSize="16" Style="{StaticResource LinkRun}" >
+                                                                        <Run.InputBindings>
+                                                                            <MouseBinding Command="{Binding OpenLastProfile}" MouseAction="LeftClick"/>
+                                                                        </Run.InputBindings>
+                                                                    </Run>
+                                                                    <Run Text="{Binding LastTopicTime}" Foreground="Gray" FontSize="12"/>
+                                                                </TextBlock.Inlines>
+                                                            </TextBlock>
+                                                        </StackPanel>
+                                                        <StackPanel Orientation="Horizontal" Grid.Column="4"  VerticalAlignment="Bottom" HorizontalAlignment="Right"
+                                                                    Visibility="{Binding RelativeSource={RelativeSource AncestorType=ScrollViewer},Path=DataContext.ButtonsVisibility}"
+                                                                    >
+                                                            <Button Margin="0,0,5,5" Width="Auto" Height="Auto" BorderThickness="0" Background="Transparent" Style="{StaticResource SimpleButton}"
+                                                                    Command="{Binding RelativeSource={RelativeSource AncestorType=ScrollViewer}, Path=DataContext.SetForumToChange}"
+                                                                    CommandParameter="{Binding ForumDb}"
+                                                                    >
+                                                                <materialDesign:PackIcon Kind="PencilOutline" Width="15"  Height="15" Background="Transparent" Foreground="White"/>
+                                                            </Button>
+                                                            <Button Margin="0,0,5,5" Width="Auto" Height="Auto" BorderThickness="0" Background="Transparent" Style="{StaticResource SimpleButton}"
+                                                                    Visibility="{Binding RelativeSource={RelativeSource AncestorType=ScrollViewer},Path=DataContext.DeleteVisibility}"
+                                                                    Command="{Binding RelativeSource={RelativeSource AncestorType=ScrollViewer}, Path=DataContext.SetForumToDelete}"
+                                                                    CommandParameter="{Binding Id}"
+                                                            >
+                                                                <materialDesign:PackIcon Kind="DeleteForeverOutline" Foreground="IndianRed" Background="Transparent" Width="15" Height="15"/>
+                                                        </Button>
+                                                        </StackPanel>
+                                                    </Grid>
+                                                </Border>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </StackPanel>
+                            </Expander>
+                        </materialDesign:Card>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </StackPanel>
+    </ScrollViewer>
+</Page>

@@ -1,0 +1,126 @@
+﻿<Page x:Class="FoxLife.View.Pages.AdminMenu"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:FoxLife.View.Pages"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      xmlns:adminMenu="clr-namespace:FoxLife.ViewModels.AdminMenu"
+      xmlns:htmlTextBlock="http://www.quickzip.org/UserControls"
+      mc:Ignorable="d">
+
+    <Page.DataContext>
+    <adminMenu:AdminMenuViewModel/>
+</Page.DataContext>
+
+    <Grid Focusable="False">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition  Width="*"/>
+            <ColumnDefinition  Width="100"/>
+        </Grid.ColumnDefinitions>
+
+        
+        <StackPanel Grid.Column="0" Margin="10">
+            <!--Function buttons-->
+            <StackPanel Orientation="Horizontal">
+                <Button Content="{DynamicResource StaffText}" 
+                        Style="{StaticResource SimpleButton}" 
+                        Padding="5,3" 
+                        VerticalAlignment="Center" HorizontalAlignment="Left"
+                        Command="{Binding ChooseAction}"
+                        CommandParameter="0"
+                        />
+                <Button Content="{DynamicResource BansText}" Margin="5,0"
+                        Style="{StaticResource SimpleButton}" 
+                        Padding="5,3" 
+                        VerticalAlignment="Center" HorizontalAlignment="Left" 
+                        Command="{Binding ChooseAction}"
+                        CommandParameter="1"
+                        />
+            </StackPanel>
+            <!--Simple text with action name-->
+                <TextBlock FontSize="24" Text="{Binding ActionName}" Visibility="{Binding ActionNameVisibility}" HorizontalAlignment="Left" Margin="10"/>
+            <!--User search field and button-->
+            <StackPanel Orientation="Horizontal" Visibility="{Binding SearchVisibility}" Margin="10, 5" >
+            <Border Width="Auto" Height="Auto" BorderThickness="0,0,0,3" BorderBrush="White" HorizontalAlignment="Left" 
+                    MinWidth="150"
+                    >
+                <Grid Margin="10,5">
+                    <TextBlock Text="{DynamicResource TypeUserNameText}" FontSize="18" Foreground="Gray" Visibility="{Binding NamePlaceholder}"/>
+                    <TextBox BorderThickness="0" FontSize="18" Text="{Binding UserName, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                        <TextBox.InputBindings>
+                                <KeyBinding Command="{Binding Search}" Key="Enter"/>
+                            </TextBox.InputBindings>
+                    </TextBox>
+                    </Grid>
+            </Border>
+            <Button Content="{DynamicResource SearchText}" Padding="5,5" VerticalAlignment="Center" Style="{StaticResource SimpleButton}" Command="{Binding Search}"/>
+            </StackPanel>
+            <!--User info after search-->
+            <htmlTextBlock:HtmlTextBlock FontSize="16" Html="{Binding SearchUserInfo}"  HorizontalAlignment="Left" Margin="10" Visibility="{Binding SearchUserInfoVisibility}"/>
+            <!--Ban menu-->
+            <StackPanel Visibility="{Binding BanMenuVisibility}" Margin="10, 5">
+                <!--Time field-->
+                <StackPanel Orientation="Horizontal">
+                    <Border Width="Auto" Height="Auto" BorderThickness="0,0,0,3" BorderBrush="White" HorizontalAlignment="Left"
+                        MinWidth="150">
+                        <Grid Margin="10,5">
+                            <TextBlock Text="{DynamicResource TypeBanTimeText}" FontSize="18" Foreground="Gray" Visibility="{Binding BanTimePlaceholderVisibility}"/>
+                            <TextBox BorderThickness="0" FontSize="18" Text="{Binding BanTime, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" />
+                        </Grid>
+                    </Border>
+
+                    <Button Style="{StaticResource SimpleButton}" Content="{DynamicResource Check}" VerticalAlignment="Center" Padding = "5,3" Margin="10,0" 
+                            Command="{Binding CheckBanTimeFormat}"/>
+                </StackPanel>
+                <!--Reason field-->
+                <Border Width="Auto" Height="Auto" BorderThickness="0,0,0,3" BorderBrush="White" HorizontalAlignment="Left"
+                        MinWidth="150">
+                    <Grid Margin="10,5">
+                        <TextBlock Text="{DynamicResource TypeBanReasonText}" FontSize="18" Foreground="Gray" Visibility="{Binding BanReasonPlaceholderVisibility}"/>
+                        <TextBox BorderThickness="0" FontSize="18" Text="{Binding BanReason, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" />
+                    </Grid>
+                </Border>
+                <!--[un]ban buttons-->
+                <StackPanel Orientation="Horizontal" Margin="10,5">
+                    <Button Style="{StaticResource SimpleButton}" Content="{DynamicResource Ban}" Padding = "5,3" Margin="5,0"  Command="{Binding Ban}"/>
+                    <Button Style="{StaticResource SimpleButton}" Content="{DynamicResource Unban}" Padding = "5,3" Margin="5,0" Command="{Binding Unban}" />
+                </StackPanel>
+
+            </StackPanel>
+            <!--Choosing role for change list-->
+            <StackPanel Visibility="{Binding ChooseRoleVisibility}">
+            <ComboBox HorizontalAlignment="Left" Foreground="White" Margin="7"
+                      Style="{StaticResource MaterialDesignOutlinedComboBox}"
+                      ItemsSource="{Binding Roles}"
+                      SelectedItem="{Binding SelectedRole, UpdateSourceTrigger=PropertyChanged}"
+                      Background="#303030"
+                      Height="Auto"
+                      MinWidth="150"
+                      BorderBrush="White"
+            >
+                <ComboBox.ItemTemplate>
+                       <DataTemplate>
+                           <TextBlock Text="{Binding RoleName}" FontSize="16"/>
+                       </DataTemplate>
+                   </ComboBox.ItemTemplate>
+            </ComboBox>
+                <Button Content="{DynamicResource ConfirmText}" Padding="5,5" HorizontalAlignment="Left" Style="{StaticResource SimpleButton}" Margin="10,5"
+                        Command="{Binding ConfirmRoleChange}"
+                        />
+                </StackPanel>
+            
+        </StackPanel>
+        <!--Navigation buttons-->
+        <StackPanel Grid.Column="1" Margin="10" HorizontalAlignment="Center">
+            <Button Margin="0,3" VerticalAlignment="Center" HorizontalAlignment="Right" Width="75" Padding="5,3,5,3"
+                    Content="{DynamicResource BackText}" Style="{StaticResource SimpleButton}"
+                    Command="{Binding Back}"
+            />
+            <Button Margin="0,3" VerticalAlignment="Center" HorizontalAlignment="Right" Width="75" Padding="5,3,5,3"
+                    Content="{DynamicResource MainText}" Style="{StaticResource SimpleButton}"
+                    Command="{Binding BackToMain}"
+            />
+        </StackPanel>
+    </Grid>
+</Page>
