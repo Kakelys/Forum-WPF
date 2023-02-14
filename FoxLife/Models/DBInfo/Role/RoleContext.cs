@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FoxLife.Models.DBInfo.Role
 {
-    internal class RoleContext:ForumDbContext,IDbContextConnection
+    internal class RoleContext:ForumDbContext
     {
         public static List<RoleDb>? GetRoleList()
         {
