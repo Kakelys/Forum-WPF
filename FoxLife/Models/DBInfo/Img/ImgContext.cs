@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FoxLife.Models.DBInfo.Img
 {
-    internal class ImgContext : ForumDbContext,IDbContextConnection
+    internal class ImgContext : ForumDbContext
     {
         public static ImageSource GetImage(int imgId)
         {
